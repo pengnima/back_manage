@@ -1,4 +1,4 @@
-import { Button, Form, FormItem, Input } from "element-ui";
+import { Button, Form, FormItem, Input, Message } from "element-ui";
 
 const element = {
   install(Vue) {
@@ -6,6 +6,8 @@ const element = {
     Vue.use(Form);
     Vue.use(FormItem);
     Vue.use(Input);
+
+    Vue.prototype.$message = Message;
   },
 };
 
