@@ -2,9 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/index.js";
 
-Vue.config.productionTip = false;
+import element from "./element/index.js";
+// import "element-ui/lib/theme-chalk/index.css";
 
-console.log(process.env.BASE_URL);
+Vue.use(element);
+
+Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),
