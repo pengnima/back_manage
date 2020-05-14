@@ -32,13 +32,13 @@ export default {
   data() {
     return {
       loginForm: {
-        userValue: "",
-        pwdValue: ""
+        userValue: "admin",
+        pwdValue: "123456"
       },
       loginRules: {
         userValue: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 6, message: "长度在 3 到 6 个字符", trigger: "blur" }
+          { min: 3, max: 9, message: "长度在 3 到 9 个字符", trigger: "blur" }
         ],
         pwdValue: [
           { required: true, message: "请输入密码", trigger: "blur" },

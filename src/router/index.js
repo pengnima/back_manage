@@ -1,5 +1,6 @@
 import VueRouter from "vue-router";
 import Vue from "vue";
+import { Message } from "element-ui";
 
 Vue.use(VueRouter);
 
@@ -7,7 +8,26 @@ Vue.use(VueRouter);
 const routes = [
   { path: "/", redirect: "/login" },
   { path: "/login", name: "login", component: () => import("../components/Login.vue") },
-  { path: "/home", name: "Home", component: () => import("../components/Home.vue") },
+  {
+    path: "/home",
+    name: "Home",
+    component: () => import("../components/Home.vue"),
+    redirect: "/home/welcome",
+    children: [
+      {
+        path: "/home/welcome",
+        component: () => import("../components/Welcome.vue"),
+      },
+      {
+        path: "/users",
+        component: () => import("../components/Users.vue"),
+      },
+      {
+        path: "/roles",
+        component: () => import("../components/Roles.vue"),
+      },
+    ],
+  },
 ];
 const router = new VueRouter({
   mode: "history",
@@ -17,8 +37,6 @@ const router = new VueRouter({
 
 //全局路由导航（让其只能在登录后才可访问其他页面）
 router.beforeEach((to, from, next) => {
-  console.log(from, "我是全局");
-
   //1. 用户要去 登录界面 就放行
   if (to.path == "/login") {
     return next();
@@ -30,7 +48,7 @@ router.beforeEach((to, from, next) => {
   if (!token) {
     console.log("请先登录");
     let tempVue = new Vue();
-    tempVue.$message.error("请先进行登录~");
+    Message.error("请先进行登录~");
     tempVue = null;
     next("/login");
   }

@@ -6,5 +6,12 @@ export function request(config) {
     timeout: 10000,
   });
 
+  instance.interceptors.request.use(config => {
+    config.headers.Authorization = window.sessionStorage.getItem("token");
+
+    //拦截了都要返回
+    return config;
+  });
+
   return instance(config);
 }
