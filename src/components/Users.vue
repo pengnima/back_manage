@@ -50,7 +50,12 @@
               @click="handleEdit(val.row.id)"
             ></el-button>
             <!-- 删除 -->
-            <el-button size="mini" type="danger" icon="el-icon-delete"></el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              @click="handleDeletUser(val.row.id)"
+            ></el-button>
             <!-- 分配 -->
             <el-tooltip
               class="item"
@@ -65,21 +70,22 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        ref="paginationRef"
         background
         layout="total,sizes,prev, pager, next,jumper"
         :total="total"
         :page-sizes="[1,2,5,10]"
-        :page-size="queryInfo.pagesize"
+        :page-size.sync="queryInfo.pagesize"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       ></el-pagination>
     </el-card>
 
-    <!-- 对话框 -->
+    <!-- 添加用户 对话框 -->
     <el-dialog
       title="添加用户"
       width="30%"
-      :visible="showDialog"
+      :visible.sync="showDialog"
       :show-close="false"
       @close="$refs.addUserRef.resetFields()"
     >
@@ -112,7 +118,7 @@
     </el-dialog>
 
     <!-- 修改用户对话框 -->
-    <el-dialog title="修改用户信息" width="30%" :visible="showEditDialog" :show-close="false">
+    <el-dialog title="修改用户信息" width="30%" :visible.sync="showEditDialog" :show-close="false">
       <!-- 对话框body主体 -->
       <el-form
         ref="editUserRef"
@@ -182,12 +188,13 @@ export default {
       total: 0,
       showDialog: false,
       showEditDialog: false,
+      showDeletDialog: false,
       editUserForm: {},
       addUserForm: {
         username: "",
-        password: "",
-        email: "",
-        mobile: ""
+        password: "123456",
+        email: "1@qq.com",
+        mobile: "15032156234"
       },
       addUserRules: {
         username: [
@@ -289,6 +296,25 @@ export default {
         this.showEditDialog = false;
         this.getUserList();
       });
+    },
+    // 删除用户
+    handleDeletUser(userId) {
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let { data: res } = await request({
+            url: "users/" + userId,
+            method: "delete"
+          });
+
+          if (res.meta.status != 200) return this.$message.error(res.meta.msg);
+          this.$message.success("删除成功");
+          this.getUserList();
+        })
+        .catch(() => this.$message.info("已取消删除"));
     }
   }
 };

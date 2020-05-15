@@ -4,6 +4,7 @@ import {
   FormItem,
   Input,
   Message,
+  MessageBox,
   Container,
   Header,
   Main,
@@ -52,6 +53,7 @@ const element = {
     Vue.use(Pagination);
     Vue.use(Dialog);
     Vue.prototype.$message = Message;
+    Vue.prototype.$confirm = MessageBox.confirm;
   },
 };
 
