@@ -64,7 +64,12 @@
               placement="top"
               :enterable="false"
             >
-              <el-button size="mini" type="warning" icon="el-icon-s-tools"></el-button>
+              <el-button
+                @click="handleRoleChange(val.row)"
+                size="mini"
+                type="warning"
+                icon="el-icon-s-tools"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -143,6 +148,34 @@
         <el-button type="primary" @click="handleEditCheck">确 定</el-button>
       </template>
     </el-dialog>
+
+    <!-- 修改角色对话框 -->
+    <el-dialog
+      title="修改用户角色"
+      :visible.sync="showRoleDialog"
+      width="30%"
+      @close="selectRoleID=null;"
+    >
+      <div class="body">
+        <p>当前用户：{{activeUser.username}}</p>
+        <p>当前角色：{{activeUser.role_name}}</p>
+        <p>
+          分配新角色：
+          <el-select v-model="selectRoleID" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showRoleDialog = false">取 消</el-button>
+        <el-button type="primary" @click="handleRoleCheck">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -152,7 +185,7 @@
   - 先弹出 对话框 询问是否 添加
   - 确认添加，
  */
-import { request } from "../request/index.js";
+import { request } from "@/request/index.js";
 export default {
   created() {
     this.getUserList();
@@ -189,6 +222,7 @@ export default {
       showDialog: false,
       showEditDialog: false,
       showDeletDialog: false,
+      showRoleDialog: false,
       editUserForm: {},
       addUserForm: {
         username: "",
@@ -207,7 +241,10 @@ export default {
         ],
         email: [{ required: true, validator: validateEmail, trigger: "blur" }],
         mobile: [{ required: true, validator: validateMobile, trigger: "blur" }]
-      }
+      },
+      activeUser: {},
+      roleList: [],
+      selectRoleID: null
     };
   },
   methods: {
@@ -315,6 +352,37 @@ export default {
           this.getUserList();
         })
         .catch(() => this.$message.info("已取消删除"));
+    },
+    //确定 修改用户角色
+    async handleRoleChange(userInfo) {
+      this.showRoleDialog = true;
+      this.activeUser.id = userInfo.id;
+      this.activeUser.role_name = userInfo.role_name;
+      this.activeUser.username = userInfo.username;
+
+      let { data: res } = await request({
+        url: "roles"
+      });
+      if (res.meta.status != 200) return this.$message.error(res.meta.msg);
+      this.roleList = res.data;
+    },
+    async handleRoleCheck() {
+      if (this.selectRoleID == null) {
+        return this.$message.error("请选择要分配的角色~");
+      }
+      let { data: res } = await request({
+        url: `users/${this.activeUser.id}/role`,
+        method: "put",
+        data: {
+          rid: this.selectRoleID
+        }
+      });
+      if (res.meta.status != 200) return this.$message.error(res.meta.msg);
+
+      //成功分配
+      this.$message.success("修改角色成功~");
+      this.showRoleDialog = false;
+      this.getUserList();
     }
   }
 };
