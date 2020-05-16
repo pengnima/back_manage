@@ -389,10 +389,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-card {
-  margin-top: 20px;
-}
-
 .el-pagination {
   margin-top: 30px;
 }

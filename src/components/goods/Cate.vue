@@ -203,15 +203,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-card {
-  margin-top: 20px;
-}
 .el-table {
   margin-top: 20px;
-}
-</style>
-<style>
-.el-cascader-panel {
-  height: 400px;
 }
 </style>

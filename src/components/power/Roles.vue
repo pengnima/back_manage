@@ -210,10 +210,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-card {
-  margin-top: 20px;
-}
-
 .bb_line {
   border-bottom: 1px solid #ddd;
 }

@@ -7,3 +7,11 @@ body,
 
   min-width: 1366px;
 }
+
+.el-card {
+  margin-top: 20px;
+}
+
+.el-cascader-panel {
+  height: 400px;
+}
