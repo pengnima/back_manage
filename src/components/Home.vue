@@ -28,6 +28,7 @@
                 <i :class="['icon',iconsObj[item.id]]"></i>
                 <span>{{item.authName}}</span>
               </template>
+              <!-- menu开启了路由，那么会以 menu-item的index作为跳转路径 -->
               <el-menu-item
                 v-for="(item2) in item.children"
                 :key="item2.id"
