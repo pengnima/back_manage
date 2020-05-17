@@ -44,7 +44,7 @@
               <el-cascader
                 v-model="goodsForm.goods_cat"
                 :options="cateList"
-                :props="{ expandTrigger: 'hover',value:'cat_id', label:'cat_name' }"
+                :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name' }"
               ></el-cascader>
             </el-form-item>
           </el-tab-pane>
@@ -60,8 +60,24 @@
               <el-input :value="item.attr_vals"></el-input>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品图片" name="3">商品图片商品图片商品图片</el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容商品内容商品内容</el-tab-pane>
+          <el-tab-pane label="商品图片" name="3">
+            <el-upload
+              :headers="headerObj"
+              name="upfile"
+              :action="upLoadURL"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              list-type="picture"
+              with-credentials
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <template #tip>只能上传jpg/png文件，且不超过500kb</template>
+            </el-upload>
+          </el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <!-- 富文本编辑器 -->
+            <quill-editor v-model="goodsForm.goods_introduce"> </quill-editor>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
@@ -97,37 +113,31 @@ export default {
         goods_cat: [1, 3, 6],
         goods_introduce: "",
         pics: "",
-        attrs: []
+        attrs: [],
       },
       //规则
       goodsRules: {
-        goods_name: [
-          { required: true, message: "请输入商品名称", trigger: "blur" }
-        ],
-        goods_number: [
-          { required: true, message: "请输入商品数量", trigger: "blur" }
-        ],
-        goods_price: [
-          { required: true, message: "请输入商品价格", trigger: "blur" }
-        ],
-        goods_weight: [
-          { required: true, message: "请输入商品重量", trigger: "blur" }
-        ],
-        goods_cat: [
-          { required: true, validator: validateCat, trigger: "change" }
-        ]
+        goods_name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+        goods_number: [{ required: true, message: "请输入商品数量", trigger: "blur" }],
+        goods_price: [{ required: true, message: "请输入商品价格", trigger: "blur" }],
+        goods_weight: [{ required: true, message: "请输入商品重量", trigger: "blur" }],
+        goods_cat: [{ required: true, validator: validateCat, trigger: "change" }],
       },
       // 分类的列表
       cateList: [],
       // tab的数据
       manyTabDate: [],
-      onlyTabDate: []
+      onlyTabDate: [],
+      upLoadURL: "http://127.0.0.1:8888/api",
+      headerObj: {
+        Authorizetion: window.sessionStorage.getItem("token"),
+      },
     };
   },
   methods: {
     async getCateList() {
       let { data: res } = await request({
-        url: "categories"
+        url: "categories",
       });
 
       if (res.meta.status != 200) {
@@ -150,8 +160,8 @@ export default {
         let { data: res } = await request({
           url: `categories/${this.catId}/attributes`,
           params: {
-            sel: "many"
-          }
+            sel: "many",
+          },
         });
         if (res.meta.status != 200) {
           return this.$message.error("请求数据失败~");
@@ -166,22 +176,27 @@ export default {
         let { data: res } = await request({
           url: `categories/${this.catId}/attributes`,
           params: {
-            sel: "only"
-          }
+            sel: "only",
+          },
         });
         if (res.meta.status != 200) {
           return this.$message.error("请求数据失败~");
         }
         this.onlyTabDate = res.data;
       }
-    }
+    },
+
+    //触发 预览图片事件
+    handlePreview() {},
+    //触发 移除图片事件
+    handleRemove() {},
   },
   computed: {
     catId() {
       let temp = this.goodsForm.goods_cat;
       return temp.length == 3 ? temp[2] : null;
-    }
-  }
+    },
+  },
 };
 </script>
 
