@@ -146,9 +146,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cat_omt {
-  margin-top: 20px;
-}
 .el-tag {
   margin: 8px;
 }

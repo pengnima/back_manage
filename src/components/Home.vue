@@ -17,7 +17,7 @@
             background-color="#333744"
             text-color="#fff"
             :unique-opened="true"
-            :default-active="$route.path"
+            :default-active="routeActive"
             :collapse="isCollapse"
             :collapse-transition="false"
             router
@@ -68,6 +68,12 @@ export default {
       isCollapse: false,
       activeURL: ""
     };
+  },
+  computed: {
+    routeActive() {
+      let path = this.$route.path.match(/^(\/[^\/]+)/);
+      return path[0];
+    }
   },
   methods: {
     logoutClick() {

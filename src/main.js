@@ -12,6 +12,13 @@ Vue.use(element);
 
 Vue.config.productionTip = false;
 
+Vue.filter("formatDate", val => {
+  val *= 1000;
+  let date = new Date(val);
+
+  return date.toLocaleDateString() + date.toLocaleTimeString();
+});
+
 new Vue({
   render: h => h(App),
   router,
