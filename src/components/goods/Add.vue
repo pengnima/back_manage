@@ -128,9 +128,9 @@ export default {
       // tab的数据
       manyTabDate: [],
       onlyTabDate: [],
-      upLoadURL: "http://127.0.0.1:8888/api",
+      upLoadURL: "/api/upload",
       headerObj: {
-        Authorizetion: window.sessionStorage.getItem("token"),
+        Authorization: window.sessionStorage.getItem("token"),
       },
     };
   },
