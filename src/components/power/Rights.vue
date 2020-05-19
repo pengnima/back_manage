@@ -15,9 +15,9 @@
         <el-table-column prop="path" label="路径"></el-table-column>
         <el-table-column label="权限等级">
           <template #default="val">
-            <el-tag v-if="val.row.level=='0'">一级</el-tag>
-            <el-tag v-else-if="val.row.level=='1'" type="success">二级</el-tag>
-            <el-tag v-else-if="val.row.level=='2'" type="warning">三级</el-tag>
+            <el-tag v-if="val.row.level == '0'">一级</el-tag>
+            <el-tag v-else-if="val.row.level == '1'" type="success">二级</el-tag>
+            <el-tag v-else-if="val.row.level == '2'" type="warning">三级</el-tag>
           </template>
         </el-table-column>
       </el-table>
@@ -34,22 +34,21 @@ export default {
   data() {
     return {
       // 权限列表
-      rightsList: []
+      rightsList: [],
     };
   },
   methods: {
     async getRightList() {
       let { data: res } = await request({
-        url: "rights/list"
+        url: "rights/list",
       });
-      console.log(res);
+
       if (res.meta.status != 200) return this.$message.error("数据请求失败");
 
       this.rightsList = res.data;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

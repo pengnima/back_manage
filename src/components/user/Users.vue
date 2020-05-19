@@ -1,4 +1,3 @@
-
 <template>
   <div class="home_users">
     <!-- 面包屑导航 -->
@@ -24,7 +23,7 @@
             </el-input>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="showDialog=true">添加用户</el-button>
+            <el-button type="primary" @click="showDialog = true">添加用户</el-button>
           </el-col>
         </el-row>
       </template>
@@ -79,7 +78,7 @@
         background
         layout="total,sizes,prev, pager, next,jumper"
         :total="total"
-        :page-sizes="[1,2,5,10]"
+        :page-sizes="[1, 2, 5, 10]"
         :page-size.sync="queryInfo.pagesize"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -117,7 +116,7 @@
       </el-form>
       <!-- 对话框footer -->
       <template #footer class="dialog-footer">
-        <el-button @click="showDialog=false">取 消</el-button>
+        <el-button @click="showDialog = false">取 消</el-button>
         <el-button type="primary" @click="handleAddUser">确 定</el-button>
       </template>
     </el-dialog>
@@ -144,7 +143,7 @@
       </el-form>
       <!-- 对话框footer -->
       <template #footer class="dialog-footer">
-        <el-button @click="showEditDialog=false">取 消</el-button>
+        <el-button @click="showEditDialog = false">取 消</el-button>
         <el-button type="primary" @click="handleEditCheck">确 定</el-button>
       </template>
     </el-dialog>
@@ -154,11 +153,11 @@
       title="修改用户角色"
       :visible.sync="showRoleDialog"
       width="30%"
-      @close="selectRoleID=null;"
+      @close="selectRoleID = null"
     >
       <div class="body">
-        <p>当前用户：{{activeUser.username}}</p>
-        <p>当前角色：{{activeUser.role_name}}</p>
+        <p>当前用户：{{ activeUser.username }}</p>
+        <p>当前角色：{{ activeUser.role_name }}</p>
         <p>
           分配新角色：
           <el-select v-model="selectRoleID" placeholder="请选择">
@@ -215,7 +214,7 @@ export default {
       queryInfo: {
         query: "",
         pagenum: 1,
-        pagesize: 2
+        pagesize: 2,
       },
       userList: [],
       total: 0,
@@ -228,30 +227,30 @@ export default {
         username: "",
         password: "123456",
         email: "1@qq.com",
-        mobile: "15032156234"
+        mobile: "15032156234",
       },
       addUserRules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 9, message: "长度在 3 到 9 个字符", trigger: "blur" }
+          { min: 3, max: 9, message: "长度在 3 到 9 个字符", trigger: "blur" },
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 9, message: "长度在 6 到 9 个字符", trigger: "blur" }
+          { min: 6, max: 9, message: "长度在 6 到 9 个字符", trigger: "blur" },
         ],
         email: [{ required: true, validator: validateEmail, trigger: "blur" }],
-        mobile: [{ required: true, validator: validateMobile, trigger: "blur" }]
+        mobile: [{ required: true, validator: validateMobile, trigger: "blur" }],
       },
       activeUser: {},
       roleList: [],
-      selectRoleID: null
+      selectRoleID: null,
     };
   },
   methods: {
     async getUserList() {
       let { data: res } = await request({
         url: "users",
-        params: this.queryInfo
+        params: this.queryInfo,
       });
       if (res.meta.status !== 200) return this.$message.error("数据请求失败");
 
@@ -270,11 +269,9 @@ export default {
     },
     //switch 改变
     async handleSwitchChange(userInfo) {
-      console.log(userInfo);
-
       let { data: res } = await request({
         url: `users/${userInfo.id}/state/${userInfo.mg_state}`,
-        method: "put"
+        method: "put",
       });
 
       // 如果修改失败，要取反。（因为switch与该数值是 v-model绑定的）
@@ -293,9 +290,8 @@ export default {
         let { data: res } = await request({
           url: "users",
           method: "POST",
-          data: this.addUserForm
+          data: this.addUserForm,
         });
-        console.log(res);
         if (res.meta.status != 201) return this.$message.error(res.meta.msg);
         this.$message.success("成功创建新用户");
         this.showDialog = false;
@@ -306,10 +302,9 @@ export default {
     // 点击修改用户
     async handleEdit(id) {
       let { data: res } = await request({
-        url: "users/" + id
+        url: "users/" + id,
       });
-      if (res.meta.status != 200)
-        return this.$message.error("出了意外，无法修改！");
+      if (res.meta.status != 200) return this.$message.error("出了意外，无法修改！");
 
       this.editUserForm = res.data;
       this.showEditDialog = true;
@@ -324,10 +319,9 @@ export default {
           method: "PUT",
           data: {
             email: this.editUserForm.email,
-            mobile: this.editUserForm.mobile
-          }
+            mobile: this.editUserForm.mobile,
+          },
         });
-        console.log(res);
         if (res.meta.status != 200) return this.$message.error(res.meta.msg);
         this.$message.success("成功修改用户");
         this.showEditDialog = false;
@@ -339,12 +333,12 @@ export default {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(async () => {
           let { data: res } = await request({
             url: "users/" + userId,
-            method: "delete"
+            method: "delete",
           });
 
           if (res.meta.status != 200) return this.$message.error(res.meta.msg);
@@ -361,7 +355,7 @@ export default {
       this.activeUser.username = userInfo.username;
 
       let { data: res } = await request({
-        url: "roles"
+        url: "roles",
       });
       if (res.meta.status != 200) return this.$message.error(res.meta.msg);
       this.roleList = res.data;
@@ -374,8 +368,8 @@ export default {
         url: `users/${this.activeUser.id}/role`,
         method: "put",
         data: {
-          rid: this.selectRoleID
-        }
+          rid: this.selectRoleID,
+        },
       });
       if (res.meta.status != 200) return this.$message.error(res.meta.msg);
 
@@ -383,8 +377,8 @@ export default {
       this.$message.success("修改角色成功~");
       this.showRoleDialog = false;
       this.getUserList();
-    }
-  }
+    },
+  },
 };
 </script>
 

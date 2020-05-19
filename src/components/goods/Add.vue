@@ -92,8 +92,6 @@ export default {
   },
   data() {
     var validateCat = (rule, value, callback) => {
-      console.log(value);
-
       if (value.length != 3) {
         this.goodsForm.goods_cat = [];
 
@@ -110,7 +108,7 @@ export default {
         goods_number: null,
         goods_price: null,
         goods_weight: null,
-        goods_cat: [1, 3, 6],
+        goods_cat: [],
         goods_introduce: "",
         pics: "",
         attrs: [],

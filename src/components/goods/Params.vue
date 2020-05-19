@@ -10,7 +10,12 @@
     <!-- 卡片 -->
     <el-card>
       <!-- Tips -->
-      <el-alert :closable="false" title="注意：只允许为第三分类设置相关参数" type="warning" show-icon></el-alert>
+      <el-alert
+        :closable="false"
+        title="注意：只允许为第三分类设置相关参数"
+        type="warning"
+        show-icon
+      ></el-alert>
       <!-- 商品分类选择 -->
       <el-row class="cat_omt">
         <el-col>
@@ -18,7 +23,7 @@
           <el-cascader
             v-model="selectCate"
             :options="cateList"
-            :props="{ expandTrigger: 'hover' ,value:'cat_id',label:'cat_name'}"
+            :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name' }"
             @change="handleSelectCate"
           ></el-cascader>
         </el-col>
@@ -33,7 +38,7 @@
             <!-- 展开行 -->
             <el-table-column type="expand">
               <template #default="val">
-                <el-tag v-for="tag in val.row.attr_vals" :key="tag" closable>{{tag}}</el-tag>
+                <el-tag v-for="tag in val.row.attr_vals" :key="tag" closable>{{ tag }}</el-tag>
               </template>
             </el-table-column>
             <!-- 索引列 -->
@@ -53,7 +58,7 @@
             <!-- 展开行 -->
             <el-table-column type="expand">
               <template #default="val">
-                <el-tag v-for="tag in val.row.attr_vals" :key="tag" closable>{{tag}}</el-tag>
+                <el-tag v-for="tag in val.row.attr_vals" :key="tag" closable>{{ tag }}</el-tag>
               </template>
             </el-table-column>
             <!-- 索引列 -->
@@ -81,13 +86,13 @@ export default {
       cateList: [],
       selectCate: [], //选择的那个三级分类数组
       activeName: "many", //默认为动态属性
-      tableData: []
+      tableData: [],
     };
   },
   methods: {
     async getCateList() {
       let { data: res } = await request({
-        url: "categories"
+        url: "categories",
       });
 
       if (res.meta.status != 200) {
@@ -95,7 +100,6 @@ export default {
       }
 
       this.cateList = res.data;
-      console.log(this.cateList);
     },
     //获取参数
     async getAttributes() {
@@ -105,15 +109,14 @@ export default {
       let { data: res } = await request({
         url: `categories/${this.cateId}/attributes`,
         params: {
-          sel: this.activeName
-        }
+          sel: this.activeName,
+        },
       });
 
       if (res.meta.status != 200) {
         return this.$message.error("请求数据失败。");
       }
 
-      console.log(res.data);
       this.tableData = res.data;
       this.tableData.forEach(v => {
         v.attr_vals = v.attr_vals ? v.attr_vals.split(" ") : [];
@@ -132,7 +135,7 @@ export default {
     //选择了 tab 触发
     handleTabClick() {
       this.getAttributes();
-    }
+    },
   },
   computed: {
     isSelectDisabled() {
@@ -140,8 +143,8 @@ export default {
     },
     cateId() {
       return this.selectCate.length == 3 ? this.selectCate[2] : null;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -5,59 +5,83 @@ import { Message } from "element-ui";
 Vue.use(VueRouter);
 
 // 路由匹配一定要在 App.vue 里做 router-view 组件。
+
+const Login = () => import(/* webpackChunkName: "login_home_welcome" */ "../components/Login.vue");
+const Home = () => import(/* webpackChunkName: "login_home_welcome" */ "../components/Home.vue");
+const HomeWelcome = () =>
+  import(/* webpackChunkName: "login_home_welcome" */ "../components/Welcome.vue");
+const Users = () =>
+  import(/* webpackChunkName: "users_rights_roles" */ "../components/user/Users.vue");
+const Rights = () =>
+  import(/* webpackChunkName: "users_rights_roles" */ "../components/power/Rights.vue");
+const Roles = () =>
+  import(/* webpackChunkName: "users_rights_roles" */ "../components/power/Roles.vue");
+const Cate = () => import(/* webpackChunkName: "cate_params" */ "../components/goods/Cate.vue");
+const Params = () => import(/* webpackChunkName: "cate_params" */ "../components/goods/Params.vue");
+const Goods = () => import(/* webpackChunkName: "goods_add" */ "../components/goods/Goods.vue");
+const Add = () => import(/* webpackChunkName: "goods_add" */ "../components/goods/Add.vue");
+const Order = () =>
+  import(/* webpackChunkName: "order_report" */ "../components/orders/Orders.vue");
+const Report = () =>
+  import(/* webpackChunkName: "order_report" */ "../components/report/Report.vue");
 const routes = [
   { path: "/", redirect: "/login" },
-  { path: "/login", name: "login", component: () => import("../components/Login.vue") },
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
   {
     path: "/home",
     name: "Home",
-    component: () => import("../components/Home.vue"),
+    component: Home,
     redirect: "/home/welcome",
     children: [
       {
         path: "/home/welcome",
-        component: () => import("../components/Welcome.vue"),
+        component: HomeWelcome,
       },
       {
         path: "/users",
-        component: () => import("../components/user/Users.vue"),
+        component: Users,
       },
       {
         path: "/rights",
-        component: () => import("../components/power/Rights.vue"),
+        component: Rights,
       },
       {
         path: "/roles",
-        component: () => import("../components/power/Roles.vue"),
+        component: Roles,
       },
       {
         path: "/categories",
-        component: () => import("../components/goods/Cate.vue"),
+        component: Cate,
       },
       {
         path: "/params",
-        component: () => import("../components/goods/Params.vue"),
+        component: Params,
       },
       {
         path: "/goods",
         name: "商品列表",
-        component: () => import("../components/goods/Goods.vue"),
+        component: Goods,
       },
       {
         path: "/goods/add",
-        component: () => import("../components/goods/Add.vue"),
+        component: Add,
       },
       {
         path: "/orders",
-        component: () => import("../components/orders/Orders.vue"),
+        component: Order,
       },
       {
         path: "/reports",
-        component: () => import("../components/report/Report.vue"),
+        component: Report,
       },
     ],
   },
 ];
+
 const router = new VueRouter({
   mode: "history",
   base: "/",

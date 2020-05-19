@@ -9,11 +9,18 @@
       <el-form ref="loginFromRef" :model="loginForm" :rules="loginRules" class="login_form">
         <!-- 账号 -->
         <el-form-item prop="userValue">
-          <el-input v-model="loginForm.userValue" prefix-icon="iconfont iconicon_people_fill"></el-input>
+          <el-input
+            v-model="loginForm.userValue"
+            prefix-icon="iconfont iconicon_people_fill"
+          ></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="pwdValue">
-          <el-input v-model="loginForm.pwdValue" prefix-icon="iconfont iconlock" type="password"></el-input>
+          <el-input
+            v-model="loginForm.pwdValue"
+            prefix-icon="iconfont iconlock"
+            type="password"
+          ></el-input>
         </el-form-item>
         <!-- 登录，重置 -->
         <el-form-item class="btns">
@@ -33,18 +40,18 @@ export default {
     return {
       loginForm: {
         userValue: "admin",
-        pwdValue: "123456"
+        pwdValue: "123456",
       },
       loginRules: {
         userValue: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 9, message: "长度在 3 到 9 个字符", trigger: "blur" }
+          { min: 3, max: 9, message: "长度在 3 到 9 个字符", trigger: "blur" },
         ],
         pwdValue: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 9, message: "长度在 6 到 9 个字符", trigger: "blur" }
-        ]
-      }
+          { min: 6, max: 9, message: "长度在 6 到 9 个字符", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -62,11 +69,10 @@ export default {
           method: "POST",
           data: {
             username: this.loginForm.userValue,
-            password: this.loginForm.pwdValue
-          }
+            password: this.loginForm.pwdValue,
+          },
         });
 
-        // console.log(res);
         if (res.meta.status != 200) {
           //$message 是直接挂载在原型上的，有点类似插件element文件夹里放着
           return this.$message.error("登录失败");
@@ -79,14 +85,12 @@ export default {
          */
 
         this.$message.success("登录成功");
-
-        console.log(res.data);
         window.sessionStorage.setItem("token", res.data.token);
 
         this.$router.push("/home");
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

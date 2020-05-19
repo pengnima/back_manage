@@ -24,20 +24,19 @@ export default {
 
     this.reportData = await this.getReportList();
 
-    console.log(this.reportData);
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(this.reportData);
   },
   data() {
     return {
-      reportData: {}
+      reportData: {},
     };
   },
   methods: {
     getReportList() {
       return new Promise(async (resolve, reject) => {
         let { data: res } = await request({
-          url: "/reports/type/1"
+          url: "/reports/type/1",
         });
 
         if (res.meta.status != 200) {
@@ -47,8 +46,8 @@ export default {
 
         resolve(res.data);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
